@@ -8,8 +8,9 @@ import { useExpenseData } from '../DataGastos/GastosData';
 function ExpenseEditScreen({ route, navigation }) {
     // Obtenha os detalhes do gasto dos parâmetros de navegação
     const { expense, onExpenseUpdated } = route.params;
-    const { expenses, setExpenses } = useExpenseData();
+    const { expenses, setExpenses, deleteExpense } = useExpenseData();
     const { navigate } = useNavigation();
+
 
     // Crie estados locais para os campos editáveis
     const [editedExpense, setEditedExpense] = useState({
@@ -71,7 +72,9 @@ function ExpenseEditScreen({ route, navigation }) {
                     }
                 />
             </View>
-            <Button title="Salvar Alterações" onPress={saveChanges} />
+            <View style={styles.buttons}>
+                    <Button title="Salvar Alterações" onPress={saveChanges} />
+            </View>
         </View>
     );
 }
@@ -79,7 +82,7 @@ function ExpenseEditScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding:20,
+        padding: 20,
     },
     containerEdit: {
         padding: 20,
@@ -89,14 +92,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    textInput : {
-        margin : 10,
+    textInput: {
+        margin: 10,
         fontSize: 15,
-        borderWidth : 1,
-        borderColor : 'black',
-        padding : 5,
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 5,
     },
-    text : {
+    text: {
         fontSize: 20,
         fontWeight: 'bold',
     },

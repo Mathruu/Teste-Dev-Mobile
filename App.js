@@ -16,7 +16,7 @@ export default function App() {
 
   return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="ExpenseList">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ExpenseList" component={ExpenseListScreen} initialParams={{ expenses, setExpenses }} />
           <Stack.Screen name="ExpenseEdit" component={ExpenseEditScreen} />

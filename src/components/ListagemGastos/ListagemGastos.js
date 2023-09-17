@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useExpenseData } from '../DataGastos/GastosData';
 
@@ -34,8 +34,27 @@ function ExpenseListScreen({ navigation, route }) {
 
         // Atualize o estado com a nova lista de despesas
         setExpenses(updatedExpenses);
+        setFilteredExpenses(updatedExpenses);
+
     };
 
+    const handleDeleteExpense = (expenseId) => {
+        console.log('Tentativa de exclusão de despesa com ID:', expenseId);
+    
+        // Filtra a lista de despesas excluindo a despesa com o ID correspondente
+        const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
+        setExpenses(updatedExpenses);
+    
+        console.log('Despesa excluída. Lista de despesas atualizada:', updatedExpenses);
+    
+        // Exiba uma mensagem de confirmação
+        Alert.alert('Exclusão bem-sucedida', 'A despesa foi excluída com sucesso.');
+    };
+
+    useEffect(() => {
+        const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
+        setExpenses(updatedExpenses);
+    }, [expenses]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -65,6 +84,11 @@ function ExpenseListScreen({ navigation, route }) {
                         <View style={styles.expenseItem}>
                             <Text>{item.category}</Text>
                             <Text>R$ {item.amount.toFixed(2)}</Text>
+                            <Button
+                                title="Excluir"
+                                onPress={() => handleDeleteExpense(item.id)}
+                                color="red"
+                            />
                         </View>
                     </TouchableOpacity>
                 )}
