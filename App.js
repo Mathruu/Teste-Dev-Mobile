@@ -1,12 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/components/Login/Login';
+import ExpenseListScreen from './src/components/ListagemGastos/ListagemGastos';
+import ExpenseEditScreen from './src/components/EditarGastos/EditarGastos';
+import { useExpenseData } from './src/components/DataGastos/GastosData';
+
+const Stack = createStackNavigator();
 
 export default function App() {
+
+  const { expenses, setExpenses } = useExpenseData();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="ExpenseList" component={ExpenseListScreen} initialParams={{ expenses, setExpenses }} />
+          <Stack.Screen name="ExpenseEdit" component={ExpenseEditScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
