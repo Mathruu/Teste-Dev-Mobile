@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/components/Login/Login';
 import ExpenseListScreen from './src/components/ListagemGastos/ListagemGastos';
 import ExpenseEditScreen from './src/components/EditarGastos/EditarGastos';
+import ExpenseAddScreen from './src/components/CriarGastos/CriarGastos';
 import { useExpenseData } from './src/components/DataGastos/GastosData';
 
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ExpenseList" component={ExpenseListScreen} initialParams={{ expenses, setExpenses }} />
           <Stack.Screen name="ExpenseEdit" component={ExpenseEditScreen} />
+          <Stack.Screen name="ExpenseAdd" component={ExpenseAddScreen} initialParams={{ expenses, setExpenses }} />
         </Stack.Navigator>
       </NavigationContainer>
   );

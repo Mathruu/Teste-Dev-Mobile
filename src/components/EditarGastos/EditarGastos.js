@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useExpenseData } from '../DataGastos/GastosData';
@@ -43,29 +43,34 @@ function ExpenseEditScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Editar Gasto</Text>
-            <TextInput
-                placeholder="Descrição"
-                value={editedExpense.description}
-                onChangeText={(text) =>
-                    setEditedExpense({ ...editedExpense, description: text })
-                }
-            />
-            <TextInput
-                placeholder="Valor"
-                value={editedExpense.amount}
-                onChangeText={(text) =>
-                    setEditedExpense({ ...editedExpense, amount: text })
-                }
-                keyboardType="numeric"
-            />
-            <TextInput
-                placeholder="Categoria"
-                value={editedExpense.category}
-                onChangeText={(text) =>
-                    setEditedExpense({ ...editedExpense, category: text })
-                }
-            />
+            <Text style={styles.heading}>Editar Gastos</Text>
+            <View style={styles.containerEdit}>
+                <Text style={styles.text}> Descrição: </Text>
+                <TextInput style={styles.textInput}
+                    placeholder="Descrição"
+                    value={editedExpense.description}
+                    onChangeText={(text) =>
+                        setEditedExpense({ ...editedExpense, description: text })
+                    }
+                />
+                <Text style={styles.text}> Valor: </Text>
+                <TextInput style={styles.textInput}
+                    placeholder="Valor"
+                    value={editedExpense.amount}
+                    onChangeText={(text) =>
+                        setEditedExpense({ ...editedExpense, amount: text })
+                    }
+                    keyboardType="numeric"
+                />
+                <Text style={styles.text}> Categoria: </Text>
+                <TextInput style={styles.textInput}
+                    placeholder="Categoria"
+                    value={editedExpense.category}
+                    onChangeText={(text) =>
+                        setEditedExpense({ ...editedExpense, category: text })
+                    }
+                />
+            </View>
             <Button title="Salvar Alterações" onPress={saveChanges} />
         </View>
     );
@@ -74,12 +79,26 @@ function ExpenseEditScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding:20,
+    },
+    containerEdit: {
+        padding: 20,
     },
     heading: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 16,
+        textAlign: 'center',
+    },
+    textInput : {
+        margin : 10,
+        fontSize: 15,
+        borderWidth : 1,
+        borderColor : 'black',
+        padding : 5,
+    },
+    text : {
+        fontSize: 20,
+        fontWeight: 'bold',
     },
 });
 

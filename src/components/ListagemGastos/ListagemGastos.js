@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useExpenseData } from '../DataGastos/GastosData';
+
 
 
 function ExpenseListScreen({ navigation, route }) {
@@ -9,6 +10,15 @@ function ExpenseListScreen({ navigation, route }) {
     const { expense } = useExpenseData();
     const { navigate } = useNavigation();
     const { expenses, setExpenses } = route.params;
+    const [searchText, setSearchText] = useState('');
+
+    // Filtrar despesas com base no texto de pesquisa
+    const filteredExpenses = expenses.filter((expense) => {
+        const categoryMatch = expense.category.toLowerCase().includes(searchText.toLowerCase());
+        const amountMatch = expense.amount.toString().includes(searchText);
+
+        return categoryMatch || amountMatch;
+    });
 
     const handleExpenseUpdated = (updatedExpense) => {
         // Mapeie a lista de despesas existente para criar uma nova lista com a despesa atualizada
@@ -26,36 +36,42 @@ function ExpenseListScreen({ navigation, route }) {
         setExpenses(updatedExpenses);
     };
 
+
     useFocusEffect(
         React.useCallback(() => {
-            // Coloque aqui qualquer código que você deseja executar quando a tela obtiver foco
-            console.log('Tela de listagem está em foco.');
             console.log('Expenses Atualizados:', expenses);
         }, [expenses])
     );
 
-    // useEffect(() => {
-    //     // Esta função será executada sempre que expenses for atualizado
-    //     console.log('Expenses Atualizados:', expenses);
-    // }, [expenses]); // Certifique-se de incluir expenses como dependência
-
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Listagem de Gastos</Text>
+            <View style={styles.filterContainer}>
+                <Text style={styles.heading}>Listagem de Gastos</Text>
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Pesquisar categoria/valor..."
+                    value={searchText}
+                    onChangeText={(text) => setSearchText(text)}
+                />
+            </View>
+            <View style={styles.horizontalLine} />
             <FlatList
-                data={expenses}
+                data={filteredExpenses}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => navigation.navigate('ExpenseEdit', { expense: item, onExpenseUpdated: handleExpenseUpdated, })}
                     >
                         <View style={styles.expenseItem}>
-                            <Text>{item.description}</Text>
+                            <Text>{item.category}</Text>
                             <Text>R$ {item.amount.toFixed(2)}</Text>
                         </View>
                     </TouchableOpacity>
                 )}
             />
+                    <TouchableOpacity onPress={() => navigate('ExpenseAdd', { setExpenses })} style={styles.addButton}>
+                        <Text style={styles.addButtonText}>Adicionar Gastos</Text>
+                    </TouchableOpacity>
         </View>
     );
 }
@@ -64,22 +80,59 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        justifyContent: 'space-between',
     },
     heading: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 16,
+        marginBottom: 2,
+        color: 'black',
     },
     expenseItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 8,
-        padding: 8,
+        marginBottom: 10,
+        padding: 10,
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 8,
     },
+    filterContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+
+    },
+    searchInput: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 8,
+        padding: 5,
+        flexDirection: 'row-reverse',
+        color: 'grey',
+        marginRight: 10,
+    },
+    horizontalLine: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        marginVertical: 10,
+        width: '100%',
+        marginBottom: 30,
+    },
+    addButton: {
+        backgroundColor: '#2196f3',
+        padding: 10,
+        borderRadius: 8,
+    },
+    addButtonText: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+
 });
 
 export default ExpenseListScreen;
