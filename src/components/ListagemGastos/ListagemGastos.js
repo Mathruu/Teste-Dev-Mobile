@@ -4,7 +4,6 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useExpenseData } from '../DataGastos/GastosData';
 
 
-
 function ExpenseListScreen({ navigation, route }) {
 
     const { expense } = useExpenseData();
@@ -12,7 +11,7 @@ function ExpenseListScreen({ navigation, route }) {
     const { expenses, setExpenses } = route.params;
     const [searchText, setSearchText] = useState('');
 
-    // Filtrar despesas com base no texto de pesquisa
+    //Filtrar despesas com base no texto de pesquisa
     const filteredExpenses = expenses.filter((expense) => {
         const categoryMatch = expense.category.toLowerCase().includes(searchText.toLowerCase());
         const amountMatch = expense.amount.toString().includes(searchText);
@@ -51,10 +50,6 @@ function ExpenseListScreen({ navigation, route }) {
         Alert.alert('Exclusão bem-sucedida', 'A despesa foi excluída com sucesso.');
     };
 
-    useEffect(() => {
-        const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
-        setExpenses(updatedExpenses);
-    }, [expenses]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -98,7 +93,8 @@ function ExpenseListScreen({ navigation, route }) {
                     </TouchableOpacity>
         </View>
     );
-}
+    }
+
 
 const styles = StyleSheet.create({
     container: {
